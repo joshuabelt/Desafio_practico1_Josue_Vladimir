@@ -9,6 +9,8 @@ class Quote
     private $iva;
     private $total;
     private $fecha;
+    private $fechaGeneracion;
+    private $fechaValidez;
 
     const TASA_IVA = 0.13; // 13% ejemplo
     const DESC_UMBRAL = 500; // Si el subtotal > 500, aplicar descuento
@@ -83,8 +85,10 @@ class Quote
     }
 
     // Métodos estáticos
-    public static function generarCodigo() {
-        return "QT-" . rand(1000, 9999);
+    public static function generarCodigo($consecutivo = 1) {
+        $anio = date('Y');
+        $numero = str_pad($consecutivo, 4, '0', STR_PAD_LEFT);
+        return "COT-{$anio}-{$numero}";
     }
 
     public static function validarMonto($monto) {
@@ -94,5 +98,13 @@ class Quote
     // Getters para visualización
     public function getCodigo() { return $this->codigo; }
     public function getTotal() { return $this->total; }
+
+    public function establecerFechas() {
+    $this->fechaGeneracion = new DateTime(); // Fecha actual
+    $this->fechaValidez = (new DateTime())->modify('+7 days'); // +7 días
+}
+
+public function getFechaGeneracion() { return $this->fechaGeneracion->format('d/m/Y'); }
+public function getFechaValidez() { return $this->fechaValidez->format('d/m/Y'); }
 }
 ?>
