@@ -6,14 +6,22 @@
     private $descripcion;
     private $precio;
     private $categoria;
+    
+    const CATEGORIAS_VALIDAS = ['Desarrollo de aplicaciones', 'Infraestructura y Cloud', 'Ciberseguridad', 'Datos e inteligencia artificial', 'Soporte y servicios administrativos', 'Mantenimiento y optimización', 'Otros'];
+    const PRECIO_MIN = 10;
+    const PRECIO_MAX = 5000;
 
     public function __construct($id, $nombre, $descripcion, $precio, $categoria)
     {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
-        $this->precio = $precio;
-        $this->categoria = $categoria;
+        if ($this->validarPrecio($precio) && $this->validarCategoria($categoria)) {
+            $this->precio = $precio;
+            $this->categoria = $categoria;
+        } else {
+            throw new Exception("Datos de servicio no válidos.");
+        }
     }
 
     public function getId()
@@ -71,69 +79,13 @@
     public function getPrecioFormateado(): string {
         return "$" . number_format($this->precio, 2, '.', ',');
     }
-
-    /**
-     * Útil para convertir el objeto a un arreglo y enviarlo a un Frontend o API
-     */
-    public function toArray(): array {
-        return [
-            'id' => $this->id,
-            'nombre' => $this->nombre,
-            'precio' => $this->precio,
-            'precio_formateado' => $this->getPrecioFormateado(),
-            'categoria' => $this->categoria,
-            'descripcion' => $this->descripcion
-        ];
+    
+    private function validarPrecio($precio) {
+        return ($precio >= self::PRECIO_MIN && $precio <= self::PRECIO_MAX);
     }
 
-    /**
-     * Catálogo de servicios en memoria (sin BD)
-     */
-    public static function obtenerCatalogo(): array {
-        return [
-            new Service(1, "Migración a la nube", "Mover archivos y sistemas a la nube", 300, "Infraestructura y Cloud"),
-            new Service(2, "Consultoría de seguridad", "Auditoría de sistemas y políticas de seguridad", 500, "Seguridad"),
-            new Service(3, "Soporte técnico 24/7", "Soporte continuo para infraestructura", 200, "Soporte"),
-            new Service(4, "Diseño de base de datos", "Modelado y optimización de BD", 400, "Bases de Datos"),
-            new Service(5, "Desarrollo web personalizado", "Creación de sitios web a medida", 1200, "Desarrollo"),
-            new Service(6, "Mantenimiento de sistemas", "Actualizaciones y parches de seguridad", 150, "Mantenimiento"),
-            new Service(7, "Backup y recuperación", "Estrategia de respaldo y DR", 350, "Infraestructura y Cloud"),
-            new Service(8, "Capacitación en tecnología", "Cursos personalizados para equipos", 600, "Capacitación")
-        ];
-    }
-
-    /**
-     * Obtener un servicio por ID
-     */
-    public static function obtenerPorId(int $id): ?Service {
-        $catalogo = self::obtenerCatalogo();
-        foreach ($catalogo as $service) {
-            if ($service->getId() === $id) {
-                return $service;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Obtener servicios agrupados por categoría
-     */
-    public static function obtenerPorCategoria(): array {
-        $catalogo = self::obtenerCatalogo();
-        $agrupado = [];
-        foreach ($catalogo as $service) {
-            $cat = $service->getCategoria();
-            if (!isset($agrupado[$cat])) {
-                $agrupado[$cat] = [];
-            }
-            $agrupado[$cat][] = $service;
-        }
-        return $agrupado;
-    }
+    private function validarCategoria($cat) {
+        return in_array($cat, self::CATEGORIAS_VALIDAS);
+    } 
 }
-
-$service1 = new Service(1, "Migración a la nube", "Mover archivos y sistemas a la nube", 300, "Servicio de infraestructura y cloud");
-$service1->getId(); // Devuelve 1
-$service1->getNombre(); // Devuelve "Migración a la nube"
-$service1->getCategoria(); // Devuelve "Servicio de infraestructura y cloud"
 ?>
