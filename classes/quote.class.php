@@ -4,13 +4,14 @@ class Quote
     private $codigo;
     private $cliente;
     private $items = [];           // Array de ['servicio' => Service, 'cantidad' => int]
-    private $subtotal;
-    private $descuento;
-    private $iva;
-    private $total;
+    private $subtotal = 0;
+    private $descuento = 0;
+    private $iva = 0;
+    private $total = 0;
     private $fecha;
     private $fechaGeneracion;
     private $fechaValidez;
+    
 
     const TASA_IVA = 0.13; // 13% ejemplo
     const DESC_UMBRAL = 500; // Si el subtotal > 500, aplicar descuento

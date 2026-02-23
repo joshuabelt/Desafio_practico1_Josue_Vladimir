@@ -7,7 +7,7 @@
     private $precio;
     private $categoria;
     
-    const CATEGORIAS_VALIDAS = ['Desarrollo de aplicaciones', 'Infraestructura y Cloud', 'Ciberseguridad', 'Datos e inteligencia artificial', 'Soporte y servicios administrativos', 'Mantenimiento y optimización', 'Otros'];
+    const CATEGORIAS_VALIDAS = ['Desarrollo de aplicaciones', 'Infraestructura y Cloud', 'Ciberseguridad', 'Datos e inteligencia artificial', 'Soporte y servicios administrativos'];
     const PRECIO_MIN = 10;
     const PRECIO_MAX = 5000;
 

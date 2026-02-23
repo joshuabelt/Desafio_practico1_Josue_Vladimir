@@ -1,5 +1,5 @@
 <?php
-require_once 'service.class.php';
+require_once '../classes/service.class.php';
 
 $catalogo = [
     new Service(1, "Desarrollo web", "Creación de páginas y aplicaciones web", 650, "Desarrollo de aplicaciones"),
@@ -15,7 +15,7 @@ $catalogo = [
     new Service(11, "Ciencia de datos", "Análisis de grandes volúmenes de datos para predecir tendencias.", 450, "Datos e inteligencia artificial"),
     new Service(12, "Implementación de IA", "Integración de chatbots, modelos de lenguaje (LLMs) y automatización con IA generativa.", 450, "Datos e inteligencia artificial"),
     new Service(13, "Business Intelligence", "Creación de tableros de control (Dashboards) para que las empresas tomen decisiones basadas en datos.", 450, "Datos e inteligencia artificial"),
-    new Service(14, "Help Desk", "Soporte técnico remoto o presencial para empleados (problemas de Windows, impresoras, software).", 450, "Soporte técnico"),
-    new Service(15, "Mantenimiento preventivo", "Limpieza técnica de hardware y actualización de parches de seguridad.", 450, "Soporte técnico"),
-    new Service(16, "Gestión de redes", "Instalación y configuración de WiFi, firewalls, switches y cableado estructurado.", 450, "Soporte técnico"),
+    new Service(14, "Help Desk", "Soporte técnico remoto o presencial para empleados (problemas de Windows, impresoras, software).", 450, "Soporte y servicios administrativos"),
+    new Service(15, "Mantenimiento preventivo", "Limpieza técnica de hardware y actualización de parches de seguridad.", 450, "Soporte y servicios administrativos"),
+    new Service(16, "Gestión de redes", "Instalación y configuración de WiFi, firewalls, switches y cableado estructurado.", 450, "Soporte y servicios administrativos"),
 ];

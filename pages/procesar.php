@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div style="margin-top: 30px; text-align: center;">
-            <button onclick="window.location.href='index.php'" class="btn" style="background: #64748b; width: auto; padding: 10px 30px;">Cerrar y Volver</button>
+            <button onclick="window.location.href='services-catalog.php'" class="btn" style="background: #64748b; width: auto; padding: 10px 30px;">Cerrar y Volver</button>
             <button onclick="window.print()" class="btn" style="background: #2563eb; width: auto; padding: 10px 30px; margin-left: 10px;">Imprimir PDF</button>
         </div>
     </div>
