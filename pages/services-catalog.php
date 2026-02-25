@@ -33,6 +33,17 @@ error_reporting(E_ALL);
     </section>
 
     <aside class="quote-panel">
+      <button type="button" class="btn btn-outline-secondary" onclick="verCarrito()">
+    🛒 Ver Carrito <span id="carrito-count" class="badge bg-primary">0</span>
+</button>
+
+<div id="servicios-seleccionados">
+    </div>
+
+<button id="btn-vaciar" class="btn btn-sm btn-danger mt-2" style="display:none;" onclick="vaciarCarrito()">
+    Vaciar Carrito
+</button>
+
         <h3>Datos del Cliente</h3>
         <form action="procesar.php" method="POST">
             <input type="text" name="nombre" placeholder="Nombre completo" required>
@@ -52,6 +63,33 @@ error_reporting(E_ALL);
         </form>
     </aside>
 </div>
+
+<div class="text-end mb-3">
+    <a href="../api/lista-cotizaciones.php" class="btn btn-info text-white shadow-sm">
+        📋 Ver Todas las Cotizaciones
+    </a>
+</div>
+
+
+
+
+<input type="hidden" name="items_json" id="items_json">
+
+<div id="miModalCarrito" class="modal-personalizado">
+    <div class="modal-contenido">
+        <div class="modal-header">
+            <h3>Resumen de Cotización</h3>
+            <span class="cerrar" onclick="cerrarModal()">&times;</span>
+        </div>
+        <div id="detalle-carrito-modal">
+            </div>
+        <div class="modal-footer">
+
+            <button class="btn-secundario" onclick="cerrarModal()">Seguir agregando</button>
+        </div>
+    </div>
+</div>
+
 
 <script src="../assets/services-catalog.js"></script>
 </body>
