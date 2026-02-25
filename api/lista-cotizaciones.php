@@ -1,5 +1,6 @@
 <?php
-$cotizaciones = file_exists('cotizaciones.json') ? json_decode(file_get_contents('cotizaciones.json'), true) : [];
+$archivo = dirname(__DIR__) . '/cotizaciones.json';
+$cotizaciones = file_exists($archivo) ? json_decode(file_get_contents($archivo), true) : [];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -68,5 +69,24 @@ $cotizaciones = file_exists('cotizaciones.json') ? json_decode(file_get_contents
             <?php endforeach; ?>
         </div>
     </div>
+    <script>
+    // Leer de sessionStorage
+    const datos = JSON.parse(sessionStorage.getItem('mis_cotizaciones')) || [];
+    const contenedor = document.getElementById('tabla-body-sesion');
+
+    if (datos.length === 0) {
+        contenedor.innerHTML = '<tr><td colspan="5" class="text-center">No hay cotizaciones en esta sesión.</td></tr>';
+    } else {
+        contenedor.innerHTML = datos.map(c => `
+            <tr>
+                <td><strong>${c.codigo}</strong></td>
+                <td>${c.cliente}</td>
+                <td>${c.fecha}</td>
+                <td>${c.cantidad_servicios}</td>
+                <td>$${parseFloat(c.total).toFixed(2)}</td>
+            </tr>
+        `).join('');
+    }
+</script>
 </body>
 </html>

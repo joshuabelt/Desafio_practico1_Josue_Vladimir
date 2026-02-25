@@ -45,7 +45,7 @@ error_reporting(E_ALL);
 </button>
 
         <h3>Datos del Cliente</h3>
-        <form action="procesar.php" method="POST">
+        <form action="procesar.php" method="POST" onsubmit="return validarEnvio(event)">
             <input type="text" name="nombre" placeholder="Nombre completo" required>
             <input type="text" name="empresa" placeholder="Empresa">
             <input type="email" name="email" placeholder="Email" required>

@@ -223,6 +223,16 @@ function actualizarUI() {
     
 }
 
+// En tu archivo JS o en el script del HTML
+function validarEnvio(event) {
+    if (carrito.length === 0) {
+        event.preventDefault(); // Detiene el envío del formulario
+        alert("¡Error! Debes agregar al menos un servicio para generar una cotización.");
+        return false;
+    }
+    return true;
+}
+
 async function generarCotización() {
     if (carrito.length === 0) return alert("El carrito está vacío");
 
