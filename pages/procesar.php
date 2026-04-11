@@ -9,8 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $items_json = $_POST['items_json'] ?? '[]';
     $items_seleccionados = json_decode($items_json, true);
 
-    // 1. Instanciar la cotización
-    // Usamos un número aleatorio para el consecutivo por ahora
+    // 1. Instanciar la cotización 
     $consecutivo = rand(1, 999); 
     $miCotizacion = new Quote($nombre);
     $miCotizacion->establecerFechas();
@@ -30,8 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $resumen = $miCotizacion->generar();
 
-    // ... después de $resumen = $miCotizacion->generar();
-
 // --- LÓGICA DE GUARDADO EN JSON ---
 $archivo = dirname(__DIR__) . '/cotizaciones.json';
 $cotizacionesExistentes = [];
@@ -42,7 +39,7 @@ if (file_exists($archivo)) {
     $cotizacionesExistentes = json_decode($contenido, true) ?? [];
 }
 
-// 2. Preparar la nueva entrada (asegurando que coincida con lo que pide lista-cotizaciones.php)
+// 2. Preparar la nueva entrada 
 $nuevaEntrada = [
     'codigo'             => $codigoUnico,
     'cliente'            => htmlspecialchars($nombre),
