@@ -1,0 +1,69 @@
+CREATE DATABASE servicio_cotizaciones;
+USE servicio_cotizaciones;
+
+
+CREATE TABLE usuarios(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    usuario VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    estado TINYINT DEFAULT 1
+);
+
+
+CREATE TABLE services (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    categoria ENUM('Desarrollo de aplicaciones', 'Infraestructura y Cloud', 'Ciberseguridad', 'Datos e inteligencia artificial', 'Soporte y servicios administrativos') NOT NULL
+);
+
+
+CREATE TABLE quotes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(50) UNIQUE NOT NULL,
+    cliente VARCHAR(100) NOT NULL,
+    usuario_id INT,
+    subtotal DECIMAL(10,2) DEFAULT 0,
+    descuento DECIMAL(10,2) DEFAULT 0,
+    iva DECIMAL(10,2) DEFAULT 0,
+    total DECIMAL(10,2) DEFAULT 0,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+
+CREATE TABLE quote_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    quote_id INT NOT NULL,
+    service_id INT NOT NULL,
+    cantidad INT DEFAULT 1,
+    precio_unitario DECIMAL(10,2) NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
+
+    FOREIGN KEY (quote_id) REFERENCES quotes(id) ON DELETE CASCADE,
+    FOREIGN KEY (service_id) REFERENCES services(id)
+);
+
+INSERT INTO services (nombre, descripcion, precio, categoria) VALUES
+
+-- Desarrollo de aplicaciones
+('Desarrollo web', 'Creación de páginas y aplicaciones web', 650.00, 'Desarrollo de aplicaciones'),
+('Desarrollo movil', 'Aplicaciones móviles nativas', 800.00, 'Desarrollo de aplicaciones'),
+('Desarrollo backend', 'Construcción de la lógica del servidor, APIs y manejo de bases de datos', 725.00, 'Desarrollo de aplicaciones'),
+('QA y Testing', 'Pruebas de calidad para asegurar que el software funcione correctamente', 800.00, 'Desarrollo de aplicaciones'),
+('Arquitectura Cloud', 'Diseño y migración de servidores físicos a la nube', 900.00, 'Infraestructura y Cloud'),
+('DevOps', 'Automatización de procesos para que el software se despliegue de forma eficiente', 450.00, 'Infraestructura y Cloud'),
+('Administracion de sistemas', 'Gestión de servidores, virtualización y almacenamiento de datos.', 700.00, 'Infraestructura y Cloud'),
+('Auditorias y pentesting', 'Simulacros de ataques para encontrar vulnerabilidades en una red o app.', 450.00, 'Ciberseguridad'),
+('Cumplimiento normativo', 'Adaptar los sistemas a leyes de protección de datos (GDPR, por ejemplo).', 500.00, 'Ciberseguridad'),
+('Respuesta a incidentes', 'Recuperación de datos tras ataques de ransomware o hackeos.', 550.00, 'Ciberseguridad'),
+('Ciencia de datos', 'Análisis de grandes volúmenes de datos para predecir tendencias.', 525.00, 'Datos e inteligencia artificial'),
+('Implementacion de IA', 'Integración de chatbots, modelos de lenguaje (LLMs) y automatización con IA generativa.', 450.00, 'Datos e inteligencia artificial'),
+('Business Intelligence', 'Creación de tableros de control (Dashboards) para que las empresas tomen decisiones basadas en datos.', 700.00, 'Datos e inteligencia artificial'),
+('Help Desk', 'SSoporte técnico remoto o presencial para empleados (problemas de Windows, impresoras, software).', 825.00, 'Soporte y servicios administrativos'),
+('Mantenimiento preventivo', 'Limpieza técnica de hardware y actualización de parches de seguridad.', 875.00, 'Soporte y servicios administrativos'),
+('Gestion de redes', 'Instalación y configuración de WiFi, firewalls, switches y cableado estructurado.', 600.00, 'Soporte y servicios administrativos');
