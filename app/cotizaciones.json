@@ -1,0 +1,16 @@
+[
+    {
+        "codigo": "COT-2026-0257",
+        "cliente": "Josue",
+        "fecha": "25\/02\/2026 14:30",
+        "cantidad_servicios": 2,
+        "total": 1652.625
+    },
+    {
+        "codigo": "COT-2026-0413",
+        "cliente": "Vladimir",
+        "fecha": "25\/02\/2026 14:35",
+        "cantidad_servicios": 2,
+        "total": 1932.3
+    }
+]
