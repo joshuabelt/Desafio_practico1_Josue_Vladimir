@@ -3,7 +3,7 @@
 require_once '/../config/database.php';
 class Quote
 {
-    private $conexion;
+    public $conexion;
     
     const TASA_IVA = 0.13; // 13% ejemplo
     const DESC_UMBRAL = 500; // Si el subtotal > 500, aplicar descuento

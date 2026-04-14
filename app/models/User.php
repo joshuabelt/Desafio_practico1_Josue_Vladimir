@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
-class Usuarios {
-   private $conexion;
+class User {
+   public $conexion;
 
     public function __construct(){
         $database = new Database();

@@ -6,7 +6,7 @@ require_once '/../config/database.php';
     const PRECIO_MIN = 10;
     const PRECIO_MAX = 5000;
     
-    private $conexion;
+    public $conexion;
 
     public function __construct()
     {

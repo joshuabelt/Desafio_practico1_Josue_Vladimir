@@ -14,7 +14,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     $password2 = $_POST["password2"];
     $rol = "empleado"; // por defecto
 
-    $dao = new Usuarios();
+    $dao = new User();
 
     // Validar contraseñas iguales
     if($password !== $password2){

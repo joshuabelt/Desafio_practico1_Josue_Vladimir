@@ -1,8 +1,7 @@
 <?php
 class Database {
     private static $instance = null;
-    private $connection;
-    
+    public $connection;
     private $host     = 'localhost';
     private $dbname   = 'servicio_cotizaciones';
     private $username = 'root';
