@@ -1,26 +1,17 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
+require_once '/../config/database.php';
  class Service
  {
     const CATEGORIAS_VALIDAS = ['Desarrollo de aplicaciones', 'Infraestructura y Cloud', 'Ciberseguridad', 'Datos e inteligencia artificial', 'Soporte y servicios administrativos'];
     const PRECIO_MIN = 10;
     const PRECIO_MAX = 5000;
     
-    private $db;
-    private $id;
-    private $nombre;
-    private $descripcion;
-    private $categoria;
-    private $precio;
+    private $conexion;
 
-    public function __construct($conexion, $datos = [])
+    public function __construct()
     {
-        $this->db = $conexion;
-        $this->id = $datos['id'] ?? null;
-        $this->nombre = $datos['nombre'] ?? null;
-        $this->descripcion = $datos['descripcion'] ?? null;
-        $this->categoria = $datos['categoria'] ?? null;
-        $this->precio = $datos['precio'] ?? 0;
+        $db = new Database();
+        $this->conexion = $db->connect();
     }
     
     public function create() {

@@ -21,10 +21,12 @@ class CartController {
             ];
         }
         header("Location: index.php?action=ver_carrito");
+        exit();
     }
 
     public function clear() {
         $_SESSION['carrito'] = [];
         header("Location: index.php?action=catalog");
+        exit();
     }
 }

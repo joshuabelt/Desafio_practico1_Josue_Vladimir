@@ -18,13 +18,14 @@ class AuthController {
                 $_SESSION['user_rol'] = $user['rol'];
                 $_SESSION['user_nombre'] = $user['nombre'];
                 
-                header("Location: index.php?action=dashboard");
+                header("Location: index.php?action=catalog");
+                exit();
             } else {
                 $error = "Credenciales incorrectas";
-                require_once 'views/login.php';
+                require_once __DIR__ . '/../views/login.php';
             }
         } else {
-            require_once 'views/login.php';
+            require_once __DIR__ . '/../views/login.php';
         }
     }
 

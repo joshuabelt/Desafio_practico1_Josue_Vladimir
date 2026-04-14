@@ -8,13 +8,16 @@ class ServiceController {
 
     public function index() {
         // Carga la lista de servicios para el catálogo
-        $servicios = $this->serviceModel->listarTodos($this->db); 
-        require_once 'views/services/catalog.php';
+        $servicios = $this->serviceModel->listarTodos($this->db);
+        require_once __DIR__ . '/../views/services/catalogo-servicios.php';
     }
 
     public function store() {
         // Solo accesible por Admin
-        if ($_SESSION['user_rol'] !== 'admin') header("Location: index.php");
+        if (!isset($_SESSION['user_rol']) || $_SESSION['user_rol'] !== 'admin') {
+            header("Location: index.php?action=catalog");
+            exit();
+        }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $nuevoServicio = new Servicios($this->db, $_POST);
@@ -22,9 +25,10 @@ class ServiceController {
 
             if (empty($errores)) {
                 $nuevoServicio->create();
-                header("Location: index.php?action=services");
+                header("Location: index.php?action=catalog");
+                exit();
             } else {
-                require_once 'views/services/create.php';
+                require_once __DIR__ . '/../views/services/create.php';
             }
         }
     }
