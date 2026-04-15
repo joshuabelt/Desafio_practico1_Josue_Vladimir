@@ -62,29 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $guardado = $miCotizacion->generar();
 
-// --- LÓGICA DE GUARDADO EN JSON ---
-$archivo = dirname(__DIR__) . '/cotizaciones.json';
-$cotizacionesExistentes = [];
-
-// 1. Leer lo que ya existe
-if (file_exists($archivo)) {
-    $contenido = file_get_contents($archivo);
-    $cotizacionesExistentes = json_decode($contenido, true) ?? [];
-}
-
-// 2. Preparar la nueva entrada 
-$nuevaEntrada = [
-    'codigo'             => $codigoUnico,
-    'cliente'            => htmlspecialchars($nombre),
-    'fecha'              => date('d/m/Y H:i'),
-    'cantidad_servicios' => count($resumen['items']),
-    'total'              => $resumen['total']
-];
-
-// 3. Añadir al array y guardar
-$cotizacionesExistentes[] = $nuevaEntrada;
-file_put_contents($archivo, json_encode($cotizacionesExistentes, JSON_PRETTY_PRINT));
-// ----------------------------------
+    if (!$guardado) {
+        error_log("Error: No se pudo guardar la cotización en BD. Código: " . $codigoUnico);
+    }
 }
 ?>
 

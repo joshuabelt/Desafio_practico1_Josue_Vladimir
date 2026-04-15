@@ -1,34 +1,52 @@
 <?php
 header('Content-Type: application/json');
+require_once __DIR__ . '/../config/database.php';
 
-// Recibimos los datos de la petición Fetch
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
-if ($data && !empty($data['items'])) {
-    $archivo = 'cotizaciones.json';
-    
-    // 1. Leer cotizaciones existentes
-    $cotizaciones = [];
-    if (file_exists($archivo)) {
-        $cotizaciones = json_decode(file_get_contents($archivo), true);
+if ($data && !empty($data['items']) && !empty($data['cliente']['nombre'])) {
+    $db = Database::getInstance()->getConnection();
+    $codigo = 'COT-' . strtoupper(substr(uniqid(), -5));
+    $cliente = htmlspecialchars($data['cliente']['nombre']);
+    $subtotal = 0;
+
+    foreach ($data['items'] as $item) {
+        $subtotal += ($item['precio'] ?? 0) * ($item['cantidad'] ?? 1);
     }
 
-    // 2. Crear la nueva cotización con los campos requeridos
-    $nuevaCotizacion = [
-        'codigo'   => 'COT-' . strtoupper(substr(uniqid(), -5)), // Genera código único
-        'cliente'  => htmlspecialchars($data['cliente']['nombre']),
-        'fecha'    => date('d/m/Y H:i'),
-        'total'    => $data['total'],
-        'servicios'=> count($data['items']) // Cantidad de servicios
-    ];
+    $descuento = 0;
+    $iva = 0;
+    $total = $data['total'] ?? $subtotal;
 
-    // 3. Guardar en el archivo
-    $cotizaciones[] = $nuevaCotizacion;
-    if (file_put_contents($archivo, json_encode($cotizaciones, JSON_PRETTY_PRINT))) {
-        echo json_encode(['success' => true, 'codigo' => $nuevaCotizacion['codigo']]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Error al escribir el archivo']);
+    try {
+        $db->beginTransaction();
+        $query = "INSERT INTO quotes (codigo, cliente, usuario_id, subtotal, descuento, iva, total, fecha) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+        $stmt = $db->prepare($query);
+        $stmt->execute([$codigo, $cliente, null, $subtotal, $descuento, $iva, $total]);
+
+        foreach ($data['items'] as $item) {
+            $queryDetalle = "INSERT INTO detalle_cuotas (cuota_codigo, servicio_id, cantidad, precio_unitario, subtotal) 
+                             VALUES (?, ?, ?, ?, ?)";
+            $stmtDetalle = $db->prepare($queryDetalle);
+            $cantidad = $item['cantidad'] ?? 1;
+            $precioUnitario = $item['precio'] ?? 0;
+            $stmtDetalle->execute([
+                $codigo,
+                $item['id'] ?? null,
+                $cantidad,
+                $precioUnitario,
+                $cantidad * $precioUnitario
+            ]);
+        }
+
+        $db->commit();
+        echo json_encode(['success' => true, 'codigo' => $codigo]);
+    } catch (Exception $e) {
+        $db->rollBack();
+        error_log('Error process-quote.php: ' . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Error al guardar la cotización en la base de datos']);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Datos inválidos']);

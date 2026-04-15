@@ -12,11 +12,20 @@ error_reporting(E_ALL);
 </head>
 <body>
 
-<h1>Generador de Cotizaciones</h1>
+<header class="page-header">
+    <div>
+        <h1>Generador de Cotizaciones</h1>
+        <p class="page-subtitle">Selecciona los servicios que quieres cotizar y completa los datos del cliente.</p>
+    </div>
+    <a href="../../api/lista-cotizaciones.php" class="btn btn-secondary">📋 Ver Todas las Cotizaciones</a>
+</header>
 
 <div class="container">
     <section>
-        <h2>Servicios Disponibles</h2>
+        <div class="section-header">
+            <h2>Servicios Disponibles</h2>
+            <p>Elige los servicios que necesitas para tu proyecto.</p>
+        </div>
         <div class="services-grid">
             <?php include '../datos.php'; foreach($catalogo as $s): ?>
                 <div class="card">
@@ -63,17 +72,6 @@ error_reporting(E_ALL);
         </form>
     </aside>
 </div>
-
-<div class="text-end mb-3">
-    <a href="../../api/lista-cotizaciones.php" class="btn btn-info text-white shadow-sm">
-        📋 Ver Todas las Cotizaciones
-    </a>
-</div>
-
-
-
-
-<input type="hidden" name="items_json" id="items_json">
 
 <div id="miModalCarrito" class="modal-personalizado">
     <div class="modal-contenido">

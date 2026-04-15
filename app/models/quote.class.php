@@ -89,14 +89,36 @@ class Quote
 
     public function generar() {
         try {
-            $query = "INSERT INTO cuotas (codigo, cliente_id, subtotal, descuento, iva, total, fecha) 
-                      VALUES (?, ?, ?, ?, ?, ?, NOW())";
+            // Inserta cotización en quotes
+            $query = "INSERT INTO quotes (codigo, cliente, usuario_id, subtotal, descuento, iva, total, fecha) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
             $stmt = $this->conexion->prepare($query);
-            return $stmt->execute([
-                $this->codigo, $this->cliente, $this->subtotal, 
-                $this->descuento, $this->iva, $this->total
+            $resultado = $stmt->execute([
+                $this->codigo, 
+                $this->cliente,
+                null,  // usuario_id (puede ser NULL o cambiar según tu lógica de sesión)
+                $this->subtotal, 
+                $this->descuento, 
+                $this->iva, 
+                $this->total
             ]);
+
+            if (!$resultado) {
+                error_log("Error al insertar cotización en quotes: " . json_encode($stmt->errorInfo()));
+                return false;
+            }
+
+            // Obtener el ID de la cotización insertada
+            $idCotizacion = $this->conexion->lastInsertId();
+
+            // Guardar detalles de items en detalle_cuotas
+            foreach ($this->items as $item) {
+                $item->guardar($this->codigo);
+            }
+
+            return true;
         } catch (Exception $e) {
+            error_log("Excepción en generar(): " . $e->getMessage());
             return false;
         }
     }

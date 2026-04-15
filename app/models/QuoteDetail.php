@@ -32,12 +32,23 @@ class DetalleCuotas {
     }
 
     public function guardar($codigo_cuota) {
-        $query = "INSERT INTO detalle_cuotas (cuota_codigo, servicio_id, cantidad, precio_unitario, subtotal) 
-                  VALUES (?, ?, ?, ?, ?)";
-        $stmt = $this->db->prepare($query);
-        return $stmt->execute([
-            $codigo_cuota, $this->servicio_id, $this->cantidad, 
-            $this->precio_unitario, $this->subtotal
-        ]);
+        try {
+            $query = "INSERT INTO detalle_cuotas (cuota_codigo, servicio_id, cantidad, precio_unitario, subtotal) 
+                      VALUES (?, ?, ?, ?, ?)";
+            $stmt = $this->db->prepare($query);
+            $resultado = $stmt->execute([
+                $codigo_cuota, $this->servicio_id, $this->cantidad, 
+                $this->precio_unitario, $this->subtotal
+            ]);
+            
+            if (!$resultado) {
+                error_log("Error al insertar detalle de cuota: " . json_encode($stmt->errorInfo()));
+            }
+            
+            return $resultado;
+        } catch (Exception $e) {
+            error_log("Excepción en guardar detalle: " . $e->getMessage());
+            return false;
+        }
     }
 }

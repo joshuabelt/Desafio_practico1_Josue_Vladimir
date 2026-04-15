@@ -28,17 +28,20 @@
                 </div>
 
                 <?php 
-                $archivo = 'cotizaciones.json';
-                if (file_exists($archivo)): 
-                    $data = json_decode(file_get_contents($archivo), true);
-                    $total_cots = is_array($data) ? count($data) : 0;
+                require_once '../config/database.php';
+                $db = Database::getInstance()->getConnection();
+                $stmt = $db->query('SELECT COUNT(*) AS total FROM quotes');
+                $total_cots = 0;
+                if ($stmt) {
+                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $total_cots = $result['total'] ?? 0;
+                }
                 ?>
                 <div class="mt-5 pt-4 border-top">
                     <span class="badge bg-light text-dark p-2">
                         Resumen: <?php echo $total_cots; ?> cotizaciones registradas
                     </span>
                 </div>
-                <?php endif; ?>
             </div>
         </div>
     </div>
