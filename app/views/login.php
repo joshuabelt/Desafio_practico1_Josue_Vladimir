@@ -22,7 +22,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $_SESSION["nombre"] = $user["nombre"];
         $_SESSION["id"] = $user["id"];
 
-        header("Location: ../controllers/DashboardController.php");
+        header("Location: services/index.php");
         exit();
 
     } else {
@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Login - Sistema de Eventos</title>
+<title>--Servicio de Cotizaciones--</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="styles.css" rel="stylesheet">
@@ -68,6 +68,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         <!-- Botón Login -->
         <div class="d-grid mb-3">
             <button class="btn btn-gradient btn-lg">Ingresar</button>
+         
         </div>
 
         <!-- Olvido Contraseña -->

@@ -3,10 +3,10 @@ require_once __DIR__ . '/../config/database.php';
 class User {
    public $conexion;
 
-    public function __construct(){
-        $database = new Database();
-        $this->conexion = $database->connect();
-    }
+   public function __construct(){
+    $database = Database::getInstance();
+    $this->conexion = $database->getConnection();
+}
 
     public function buscarUsuario($usuario){
         $sql = "SELECT * FROM usuarios WHERE usuario = ? AND estado = 1";

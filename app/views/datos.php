@@ -1,5 +1,5 @@
 <?php
-require_once '../classes/service.class.php';
+require_once '../../models/service.class.php';
 
 $catalogo = [
     new Service(1, "Desarrollo web", "Creación de páginas y aplicaciones web", 650, "Desarrollo de aplicaciones"),

@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 <head>
     <meta charset="UTF-8">
     <title>Sistema de Cotizaciones Profesionales</title>
-    <link rel="stylesheet" href="../assets/services-catalog.css">    
+    <link rel="stylesheet" href="assets/services-catalog.css">    
 </head>
 <body>
 
@@ -65,7 +65,7 @@ error_reporting(E_ALL);
 </div>
 
 <div class="text-end mb-3">
-    <a href="../api/lista-cotizaciones.php" class="btn btn-info text-white shadow-sm">
+    <a href="../../api/lista-cotizaciones.php" class="btn btn-info text-white shadow-sm">
         📋 Ver Todas las Cotizaciones
     </a>
 </div>
@@ -91,6 +91,6 @@ error_reporting(E_ALL);
 </div>
 
 
-<script src="../assets/services-catalog.js"></script>
+<script src="assets/services-catalog.js"></script>
 </body>
 </html>
