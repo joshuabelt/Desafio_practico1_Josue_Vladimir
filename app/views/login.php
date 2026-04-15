@@ -22,6 +22,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $_SESSION["nombre"] = $user["nombre"];
         $_SESSION["id"] = $user["id"];
 
+        if ($_SESSION["rol"] === "admin") {
+            header("Location: user_dashboard.php");
+            exit();
+        }
+
         header("Location: services/index.php");
         exit();
 
