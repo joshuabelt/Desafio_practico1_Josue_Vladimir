@@ -82,11 +82,13 @@ if (empty($_SESSION['usuario'])) {
     </aside>
 </div>
 
-<div class="text-end mb-3">
-    <a href="../../api/lista-cotizaciones.php" class="btn btn-info text-white shadow-sm">
-        📋 Ver Todas las Cotizaciones
-    </a>
-</div>
+<?php if ($_SESSION['rol'] === 'admin'): ?>
+    <div class="text-end mb-3">
+        <a href="../../api/lista-cotizaciones.php" class="btn btn-info text-white shadow-sm">
+            📋 Ver Todas las Cotizaciones
+        </a>
+    </div>
+<?php endif; ?>
 
 
 

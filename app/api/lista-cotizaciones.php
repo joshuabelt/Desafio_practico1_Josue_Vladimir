@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+if (empty($_SESSION['usuario']) || $_SESSION['rol'] !== 'admin') {
+    header('Location: ../views/login.php');
+    exit();
+}
+
 $archivo = dirname(__DIR__) . '/cotizaciones.json';
 $cotizaciones = file_exists($archivo) ? json_decode(file_get_contents($archivo), true) : [];
 ?>

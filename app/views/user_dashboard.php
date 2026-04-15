@@ -29,7 +29,9 @@ if (empty($_SESSION["usuario"])) {
                     <div class="list-group">
                         <a href="services/services-catalog.php" class="list-group-item list-group-item-action">Ver catálogo de servicios</a>
                         <a href="services/index.php" class="list-group-item list-group-item-action">Ir a la página principal</a>
-                        <a href="../api/lista-cotizaciones.php" class="list-group-item list-group-item-action">Ver cotizaciones</a>
+                        <?php if ($_SESSION["rol"] === "admin"): ?>
+                            <a href="../api/lista-cotizaciones.php" class="list-group-item list-group-item-action">Ver cotizaciones</a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="card-footer text-end">
