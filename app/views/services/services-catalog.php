@@ -5,10 +5,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if (empty($_SESSION['usuario'])) {
+if (empty($_SESSION['usuario']) && empty($_SESSION['user_nombre'])) {
     header('Location: ../login.php');
     exit();
 }
+
+$userName = $_SESSION['nombre'] ?? $_SESSION['user_nombre'] ?? 'Usuario';
+$userRole = $_SESSION['rol'] ?? $_SESSION['user_rol'] ?? 'Empleado';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,8 +31,8 @@ if (empty($_SESSION['usuario'])) {
     </div>
     <div class="catalog-header-right">
         <div class="catalog-user-info">
-            <span>Usuario: <strong><?php echo htmlspecialchars($_SESSION['nombre']); ?></strong></span>
-            <span>Rol: <strong><?php echo htmlspecialchars($_SESSION['rol']); ?></strong></span>
+            <span>Usuario: <strong><?php echo htmlspecialchars($userName); ?></strong></span>
+            <span>Rol: <strong><?php echo htmlspecialchars($userRole); ?></strong></span>
         </div>
         <a href="../logout.php" class="logout-link">Cerrar sesión</a>
     </div>
@@ -88,7 +91,7 @@ if (empty($_SESSION['usuario'])) {
     </aside>
 </div>
 
-<?php if ($_SESSION['rol'] === 'admin'): ?>
+<?php if ($userRole === 'admin'): ?>
     <div class="text-end mb-3">
         <a href="../../api/lista-cotizaciones.php" class="btn btn-info text-white shadow-sm">
             📋 Ver Todas las Cotizaciones
