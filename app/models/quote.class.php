@@ -111,9 +111,9 @@ class Quote
             // Obtener el ID de la cotización insertada
             $idCotizacion = $this->conexion->lastInsertId();
 
-            // Guardar detalles de items en detalle_cuotas
+            // Guardar detalles de items en quote_items
             foreach ($this->items as $item) {
-                $item->guardar($this->codigo);
+                $item->guardar($idCotizacion);
             }
 
             return true;

@@ -26,14 +26,15 @@ if ($data && !empty($data['items']) && !empty($data['cliente']['nombre'])) {
         $stmt = $db->prepare($query);
         $stmt->execute([$codigo, $cliente, null, $subtotal, $descuento, $iva, $total]);
 
+        $quoteId = $db->lastInsertId();
         foreach ($data['items'] as $item) {
-            $queryDetalle = "INSERT INTO detalle_cuotas (cuota_codigo, servicio_id, cantidad, precio_unitario, subtotal) 
+            $queryDetalle = "INSERT INTO quote_items (quote_id, service_id, cantidad, precio_unitario, subtotal) 
                              VALUES (?, ?, ?, ?, ?)";
             $stmtDetalle = $db->prepare($queryDetalle);
             $cantidad = $item['cantidad'] ?? 1;
             $precioUnitario = $item['precio'] ?? 0;
             $stmtDetalle->execute([
-                $codigo,
+                $quoteId,
                 $item['id'] ?? null,
                 $cantidad,
                 $precioUnitario,

@@ -31,13 +31,13 @@ class DetalleCuotas {
         return $this->precio_unitario;
     }
 
-    public function guardar($codigo_cuota) {
+    public function guardar($quote_id) {
         try {
-            $query = "INSERT INTO detalle_cuotas (cuota_codigo, servicio_id, cantidad, precio_unitario, subtotal) 
+            $query = "INSERT INTO quote_items (quote_id, service_id, cantidad, precio_unitario, subtotal) 
                       VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($query);
             $resultado = $stmt->execute([
-                $codigo_cuota, $this->servicio_id, $this->cantidad, 
+                $quote_id, $this->servicio_id, $this->cantidad, 
                 $this->precio_unitario, $this->subtotal
             ]);
             
