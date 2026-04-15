@@ -1,10 +1,8 @@
 <?php
 
-require_once '/../config/database.php';
+require_once __DIR__ . '/../config/database.php';
 class Quote
 {
-    public $conexion;
-    
     const TASA_IVA = 0.13; // 13% ejemplo
     const DESC_UMBRAL = 500; // Si el subtotal > 500, aplicar descuento
     const PORCENTAJE_DESC = 0.10; // 10% de descuento
@@ -13,9 +11,28 @@ class Quote
     const DESC_NIVEL_2 = 0.10; // 10%
     const DESC_NIVEL_3 = 0.15; // 15%
 
+    public $conexion;
+    public $codigo = '';
+    public $cliente = '';
+    public $fechaGeneracion = '';
+    public $fechaValidez = '';
+    public $items = [];
+    public $subtotal = 0;
+    public $descuento = 0;
+    public $iva = 0;
+    public $total = 0;
+
     public function __construct() {
-        $db = new Database();
-        $this->conexion = $db->connect();
+        $this->conexion = Database::getInstance()->getConnection();
+        $this->codigo = '';
+        $this->cliente = '';
+        $this->fechaGeneracion = date('d/m/Y H:i');
+        $this->fechaValidez = date('d/m/Y', strtotime('+7 days'));
+        $this->items = [];
+        $this->subtotal = 0;
+        $this->descuento = 0;
+        $this->iva = 0;
+        $this->total = 0;
     }
     
     public static function generarCodigo() {
@@ -62,11 +79,19 @@ class Quote
         $this->total = $this->calcularTotal();
     }
 
+    public function getFechaGeneracion() {
+        return $this->fechaGeneracion;
+    }
+
+    public function getFechaValidez() {
+        return $this->fechaValidez;
+    }
+
     public function generar() {
         try {
             $query = "INSERT INTO cuotas (codigo, cliente_id, subtotal, descuento, iva, total, fecha) 
                       VALUES (?, ?, ?, ?, ?, ?, NOW())";
-            $stmt = $this->db->prepare($query);
+            $stmt = $this->conexion->prepare($query);
             return $stmt->execute([
                 $this->codigo, $this->cliente, $this->subtotal, 
                 $this->descuento, $this->iva, $this->total

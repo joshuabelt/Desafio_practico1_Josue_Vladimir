@@ -12,5 +12,33 @@
         "fecha": "25\/02\/2026 14:35",
         "cantidad_servicios": 2,
         "total": 1932.3
+    },
+    {
+        "codigo": "COT-FD51C0",
+        "cliente": "Juan ",
+        "fecha": "15\/04\/2026 05:03",
+        "cantidad_servicios": 3,
+        "total": 1703.475
+    },
+    {
+        "codigo": "COT-2E3F96",
+        "cliente": "Juan ",
+        "fecha": "15\/04\/2026 05:08",
+        "cantidad_servicios": 3,
+        "total": 1703.475
+    },
+    {
+        "codigo": "COT-A80435",
+        "cliente": "Juan ",
+        "fecha": "15\/04\/2026 05:11",
+        "cantidad_servicios": 3,
+        "total": 1703.475
+    },
+    {
+        "codigo": "COT-D4C1BC",
+        "cliente": "Juan ",
+        "fecha": "15\/04\/2026 05:18",
+        "cantidad_servicios": 3,
+        "total": 1703.475
     }
 ]

@@ -24,7 +24,7 @@ $cotizaciones = file_exists($archivo) ? json_decode(file_get_contents($archivo),
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Historial de Cotizaciones</h2>
-            <a href="../pages/services-catalog.php" class="btn btn-outline-primary">← Volver al Catálogo</a>
+            <a href="../views/services/services-catalog.php" class="btn btn-outline-primary">← Volver al Catálogo</a>
         </div>
 
         <div class="table-responsive-desktop card shadow-sm">

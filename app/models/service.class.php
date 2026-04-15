@@ -1,5 +1,5 @@
 <?php
-require_once '/../config/database.php';
+require_once __DIR__ . '/../config/database.php';
  class Service
  {
     const CATEGORIAS_VALIDAS = ['Desarrollo de aplicaciones', 'Infraestructura y Cloud', 'Ciberseguridad', 'Datos e inteligencia artificial', 'Soporte y servicios administrativos'];
@@ -7,11 +7,22 @@ require_once '/../config/database.php';
     const PRECIO_MAX = 5000;
     
     public $conexion;
+    public $id;
+    public $nombre;
+    public $descripcion;
+    public $precio;
+    public $categoria;
 
-    public function __construct()
+    public function __construct($id = null, $nombre = null, $descripcion = null, $precio = null, $categoria = null)
     {
-        $db = new Database();
-        $this->conexion = $db->connect();
+        if ($id !== null) {
+            $this->id = $id;
+            $this->nombre = $nombre;
+            $this->descripcion = $descripcion;
+            $this->precio = $precio;
+            $this->categoria = $categoria;
+        }
+        $this->conexion = Database::getInstance()->getConnection();
     }
     
     public function create() {
@@ -20,7 +31,7 @@ require_once '/../config/database.php';
             return false;
         }
 
-        $stmt = $this->db->prepare(
+        $stmt = $this->conexion->prepare(
             "INSERT INTO services (nombre, descripcion, categoria, precio) 
              VALUES (?, ?, ?, ?)"
         );
@@ -39,7 +50,7 @@ require_once '/../config/database.php';
     public function update() {
         if (!$this->id) return false;
 
-        $stmt = $this->db->prepare(
+        $stmt = $this->conexion->prepare(
             "UPDATE services 
              SET nombre = ?, descripcion = ?, categoria = ?, precio = ?
              WHERE id = ?"
@@ -60,12 +71,12 @@ require_once '/../config/database.php';
     public function delete() {
         if (!$this->id) return false;
 
-        $stmt = $this->db->prepare("DELETE FROM services WHERE id = ?");
+        $stmt = $this->conexion->prepare("DELETE FROM services WHERE id = ?");
         return $stmt->execute([$this->id]);
     }
     
     public function getById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM services WHERE id = ?");
+        $stmt = $this->conexion->prepare("SELECT * FROM services WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch();
     }

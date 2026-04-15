@@ -18,7 +18,7 @@ error_reporting(E_ALL);
     <section>
         <h2>Servicios Disponibles</h2>
         <div class="services-grid">
-            <?php include 'datos.php'; foreach($catalogo as $s): ?>
+            <?php include '../datos.php'; foreach($catalogo as $s): ?>
                 <div class="card">
                     <small><?php echo $s->getCategoria(); ?></small>
                     <h3><?php echo $s->getNombre(); ?></h3>
@@ -45,7 +45,7 @@ error_reporting(E_ALL);
 </button>
 
         <h3>Datos del Cliente</h3>
-        <form action="procesar.php" method="POST" onsubmit="return validarEnvio(event)">
+        <form action="../procesar.php" method="POST" onsubmit="return validarEnvio(event)">
             <input type="text" name="nombre" placeholder="Nombre completo" required>
             <input type="text" name="empresa" placeholder="Empresa">
             <input type="email" name="email" placeholder="Email" required>

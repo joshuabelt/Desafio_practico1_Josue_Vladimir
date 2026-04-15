@@ -19,6 +19,18 @@ class DetalleCuotas {
         return $this->subtotal;
     }
 
+    public function getServicioId() {
+        return $this->servicio_id;
+    }
+
+    public function getCantidad() {
+        return $this->cantidad;
+    }
+
+    public function getPrecioUnitario() {
+        return $this->precio_unitario;
+    }
+
     public function guardar($codigo_cuota) {
         $query = "INSERT INTO detalle_cuotas (cuota_codigo, servicio_id, cantidad, precio_unitario, subtotal) 
                   VALUES (?, ?, ?, ?, ?)";

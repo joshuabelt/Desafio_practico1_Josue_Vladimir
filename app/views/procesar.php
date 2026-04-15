@@ -1,33 +1,66 @@
 <?php
-require_once '../classes/service.class.php';
-require_once '../classes/quote.class.php';
-require_once 'datos.php'; // Para buscar los servicios por ID
+require_once __DIR__ . '/../models/service.class.php';
+require_once __DIR__ . '/../models/quote.class.php';
+require_once __DIR__ . '/../models/QuoteDetail.php';
+require_once __DIR__ . '/datos.php'; // Para buscar los servicios por ID
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'] ?? 'Cliente';
     $empresa = $_POST['empresa'] ?? 'N/A';
     $items_json = $_POST['items_json'] ?? '[]';
-    $items_seleccionados = json_decode($items_json, true);
+    $items_seleccionados = json_decode($items_json, true) ?: [];
 
     // 1. Instanciar la cotización 
     $consecutivo = rand(1, 999); 
-    $miCotizacion = new Quote($nombre);
-    $miCotizacion->establecerFechas();
+    $miCotizacion = new Quote();
     
     // Sobrescribimos el código con el formato solicitado: COT-YYYY-####
     $codigoUnico = Quote::generarCodigo($consecutivo);
+    $miCotizacion->codigo = $codigoUnico;
+    $miCotizacion->cliente = htmlspecialchars($nombre);
 
-    // 2. Mapear items del JSON a objetos Service y agregarlos
+    // 2. Mapear items del JSON a objetos DetalleCuotas y agregarlos
     foreach ($items_seleccionados as $item) {
         // Buscamos el objeto Service original en nuestro "catálogo" por ID
         foreach ($catalogo as $servicioOriginal) {
-            if ($servicioOriginal->getId() == $item['id']) {
-                $miCotizacion->agregarItem($servicioOriginal, $item['cantidad']);
+            if ($servicioOriginal->getId() == ($item['id'] ?? null)) {
+                $detalle = new DetalleCuotas($miCotizacion->conexion, [
+                    'servicio_id' => $servicioOriginal->getId(),
+                    'cantidad' => $item['cantidad'] ?? 1,
+                    'precio' => $servicioOriginal->getPrecio()
+                ]);
+                $miCotizacion->agregarItem($detalle);
+                break;
             }
         }
     }
 
-    $resumen = $miCotizacion->generar();
+    $itemsResumen = [];
+    foreach ($miCotizacion->items as $detalleItem) {
+        $servicio = null;
+        foreach ($catalogo as $servicioOriginal) {
+            if ($servicioOriginal->getId() == $detalleItem->getServicioId()) {
+                $servicio = $servicioOriginal;
+                break;
+            }
+        }
+
+        $itemsResumen[] = [
+            'servicio' => $servicio,
+            'cantidad' => $detalleItem->getCantidad(),
+            'subtotal' => $detalleItem->getSubtotal()
+        ];
+    }
+
+    $resumen = [
+        'items' => $itemsResumen,
+        'subtotal' => $miCotizacion->subtotal,
+        'descuento' => $miCotizacion->descuento,
+        'iva' => $miCotizacion->iva,
+        'total' => $miCotizacion->total
+    ];
+
+    $guardado = $miCotizacion->generar();
 
 // --- LÓGICA DE GUARDADO EN JSON ---
 $archivo = dirname(__DIR__) . '/cotizaciones.json';
@@ -110,7 +143,7 @@ file_put_contents($archivo, json_encode($cotizacionesExistentes, JSON_PRETTY_PRI
         </div>
 
         <div style="margin-top: 30px; text-align: center;">
-            <button onclick="window.location.href='services-catalog.php'" class="btn" style="background: #64748b; width: auto; padding: 10px 30px;">Cerrar y Volver</button>
+            <button onclick="window.location.href='services/services-catalog.php'" class="btn" style="background: #64748b; width: auto; padding: 10px 30px;">Cerrar y Volver</button>
             <button onclick="window.print()" class="btn" style="background: #2563eb; width: auto; padding: 10px 30px; margin-left: 10px;">Imprimir PDF</button>
         </div>
     </div>
