@@ -8,7 +8,10 @@ class QuoteController {
 
     public function checkout() {
         session_start();
-        if (empty($_SESSION['carrito'])) header("Location: index.php");
+        if (empty($_SESSION['carrito'])) {
+            header("Location: index.php?action=catalog");
+            exit();
+        }
 
         // 1. Instanciar el modelo principal
         $cuota = new Cuotas($this->db, $_SESSION['user_id']);
@@ -36,7 +39,8 @@ class QuoteController {
             }
             
             $_SESSION['carrito'] = []; // Limpiar carrito tras éxito
-            header("Location: index.php?action=success&code=" . $codigo);
+            header("Location: index.php?action=catalog");
+            exit();
         }
     }
 }

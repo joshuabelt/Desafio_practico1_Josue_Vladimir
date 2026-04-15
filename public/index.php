@@ -4,10 +4,10 @@ session_start();
 
 // Carga automática de archivos (Autoload simple)
 require_once __DIR__ . '/../app/config/database.php';
-require_once __DIR__ . '/../app/models/Usuarios.php';
-require_once __DIR__ . '/../app/models/Servicios.php';
-require_once __DIR__ . '/../app/models/Cuotas.php';
-require_once __DIR__ . '/../app/models/DetalleCuotas.php';
+require_once __DIR__ . '/../app/models/User.php';
+require_once __DIR__ . '/../app/models/service.class.php';
+require_once __DIR__ . '/../app/models/quote.class.php';
+require_once __DIR__ . '/../app/models/QuoteDetail.php';
 
 require_once __DIR__ . '/../app/controllers/AuthController.php';
 require_once __DIR__ . '/../app/controllers/ServiceController.php';
@@ -44,7 +44,12 @@ switch ($action) {
         break;
 
     case 'ver_carrito':
-        require_once __DIR__ . '/../app/views/cart.php';
+        require_once __DIR__ . '/../app/views/carrito_dinamico.php';
+        break;
+
+    case 'clear_cart':
+        $controller = new CartController();
+        $controller->clear();
         break;
 
     case 'checkout':

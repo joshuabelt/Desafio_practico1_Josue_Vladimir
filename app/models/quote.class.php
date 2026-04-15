@@ -1,14 +1,9 @@
 <?php
+
+require_once '/../config/database.php';
 class Quote
 {
-    private $db;
-    private $codigo;
-    private $cliente;
-    private $items = []; // Array de objetos DetalleCuotas
-    private $subtotal = 0;
-    private $descuento = 0;
-    private $iva = 0;
-    private $total = 0;
+    public $conexion;
     
     const TASA_IVA = 0.13; // 13% ejemplo
     const DESC_UMBRAL = 500; // Si el subtotal > 500, aplicar descuento
@@ -18,10 +13,9 @@ class Quote
     const DESC_NIVEL_2 = 0.10; // 10%
     const DESC_NIVEL_3 = 0.15; // 15%
 
-    public function __construct($conexion, $cliente = null) {
-        $this->db = $conexion;
-        $this->cliente = $cliente;
-        $this->codigo = self::generarCodigo();
+    public function __construct() {
+        $db = new Database();
+        $this->conexion = $db->connect();
     }
     
     public static function generarCodigo() {
