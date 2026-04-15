@@ -1,14 +1,13 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
-$db = Database::getInstance()->getConnection();
+session_start();
 
-$query = "SELECT q.id, q.codigo, q.cliente, q.fecha, q.total, COUNT(dc.servicio_id) AS cantidad_servicios 
-          FROM quotes q
-          LEFT JOIN detalle_cuotas dc ON dc.cuota_codigo = q.codigo
-          GROUP BY q.id, q.codigo, q.cliente, q.fecha, q.total
-          ORDER BY q.fecha DESC";
-$stmt = $db->query($query);
-$cotizaciones = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+if (empty($_SESSION['usuario']) || $_SESSION['rol'] !== 'admin') {
+    header('Location: ../views/login.php');
+    exit();
+}
+
+$archivo = dirname(__DIR__) . '/cotizaciones.json';
+$cotizaciones = file_exists($archivo) ? json_decode(file_get_contents($archivo), true) : [];
 ?>
 <!DOCTYPE html>
 <html lang="es">

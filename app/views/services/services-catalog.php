@@ -1,7 +1,14 @@
 <?php
+session_start();
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+if (empty($_SESSION['usuario'])) {
+    header('Location: ../login.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -12,12 +19,17 @@ error_reporting(E_ALL);
 </head>
 <body>
 
-<header class="page-header">
-    <div>
-        <h1>Generador de Cotizaciones</h1>
-        <p class="page-subtitle">Selecciona los servicios que quieres cotizar y completa los datos del cliente.</p>
+<header class="catalog-header">
+    <div class="catalog-header-left">
+        <div class="catalog-title">
+            <h1>Generador de Cotizaciones</h1>
+        </div>
+        <div class="catalog-user-info">
+            <span>Usuario: <strong><?php echo htmlspecialchars($_SESSION['nombre']); ?></strong></span>
+            <span>Rol: <strong><?php echo htmlspecialchars($_SESSION['rol']); ?></strong></span>
+        </div>
     </div>
-    <a href="../../api/lista-cotizaciones.php" class="btn btn-secondary">📋 Ver Todas las Cotizaciones</a>
+    <a href="../logout.php" class="logout-link">Cerrar sesión</a>
 </header>
 
 <div class="container">
@@ -72,6 +84,19 @@ error_reporting(E_ALL);
         </form>
     </aside>
 </div>
+
+<?php if ($_SESSION['rol'] === 'admin'): ?>
+    <div class="text-end mb-3">
+        <a href="../../api/lista-cotizaciones.php" class="btn btn-info text-white shadow-sm">
+            📋 Ver Todas las Cotizaciones
+        </a>
+    </div>
+<?php endif; ?>
+
+
+
+
+<input type="hidden" name="items_json" id="items_json">
 
 <div id="miModalCarrito" class="modal-personalizado">
     <div class="modal-contenido">
