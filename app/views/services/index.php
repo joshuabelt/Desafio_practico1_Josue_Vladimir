@@ -26,22 +26,6 @@
                       🛠️ Ver Catálogo
                     </a>
                 </div>
-
-                <?php 
-                require_once '../config/database.php';
-                $db = Database::getInstance()->getConnection();
-                $stmt = $db->query('SELECT COUNT(*) AS total FROM quotes');
-                $total_cots = 0;
-                if ($stmt) {
-                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                    $total_cots = $result['total'] ?? 0;
-                }
-                ?>
-                <div class="mt-5 pt-4 border-top">
-                    <span class="badge bg-light text-dark p-2">
-                        Resumen: <?php echo $total_cots; ?> cotizaciones registradas
-                    </span>
-                </div>
             </div>
         </div>
     </div>

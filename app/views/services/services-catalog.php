@@ -24,12 +24,15 @@ if (empty($_SESSION['usuario'])) {
         <div class="catalog-title">
             <h1>Generador de Cotizaciones</h1>
         </div>
+        <p class="catalog-subtitle">Elige los servicios ideales para tu proyecto y genera cotizaciones profesionales.</p>
+    </div>
+    <div class="catalog-header-right">
         <div class="catalog-user-info">
             <span>Usuario: <strong><?php echo htmlspecialchars($_SESSION['nombre']); ?></strong></span>
             <span>Rol: <strong><?php echo htmlspecialchars($_SESSION['rol']); ?></strong></span>
         </div>
+        <a href="../logout.php" class="logout-link">Cerrar sesión</a>
     </div>
-    <a href="../logout.php" class="logout-link">Cerrar sesión</a>
 </header>
 
 <div class="container">
